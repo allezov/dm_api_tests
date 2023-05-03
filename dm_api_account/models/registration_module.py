@@ -1,5 +1,5 @@
 registration_model = {
-    "login": "<test4>",
-    "email": "<test3@test.ru>",
-    "password": "<testtest3>"
+    "login": "test40",
+    "email": "test40@test.ru",
+    "password": "testpassword"
 }

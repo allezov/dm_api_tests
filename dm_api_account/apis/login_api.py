@@ -24,24 +24,26 @@ class LoginApi:
         )
         return response
 
-    def del_v1_account_all(self) -> Response:  # delete **kwargs
+    def del_v1_account_all(self, **kwargs) -> Response:
         """
         Logout from every device
         :return:
         """
 
         response = self.client.delete(
-            path=f"/v1/account/login/all"
+            path=f"/v1/account/login/all",
+            **kwargs
         )
         return response
 
-    def del_v1_account_login(self) -> Response:  # delete **kwargs
+    def del_v1_account_login(self, **kwargs) -> Response:
         """
         Logout as current user
         :return:
         """
 
         response = self.client.delete(
-            path=f"/v1/account/login"
+            path=f"/v1/account/login",
+            **kwargs
         )
         return response

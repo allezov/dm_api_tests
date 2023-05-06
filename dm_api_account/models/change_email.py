@@ -1,5 +1,7 @@
-change_email = {
-    "login": "<string>",
-    "password": "<string>",
-    "email": "<string>"
-}
+from pydantic import BaseModel, StrictStr
+
+
+class ChangeEmail(BaseModel):
+    login: StrictStr
+    password: StrictStr
+    email: StrictStr

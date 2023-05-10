@@ -1,8 +1,12 @@
-from pydantic import BaseModel, StrictStr, Field
+from __future__ import annotations
+from typing import Optional
+from pydantic import BaseModel, StrictStr, Extra, Field
 
 
-class RegistrationModel(BaseModel):
-    login: StrictStr
-    email: StrictStr
-    password: StrictStr = Field(default='test_password')
+class Registration(BaseModel):
+    class Config:
+        extra = Extra.forbid
 
+    login: Optional[StrictStr] = Field(None, description='Login')
+    email: Optional[StrictStr] = Field(None, description='Email')
+    password: Optional[StrictStr] = Field(description='Password', default='test_password')

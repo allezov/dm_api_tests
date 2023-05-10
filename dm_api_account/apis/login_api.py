@@ -1,7 +1,7 @@
 from requests import Response
-from ..models.login_credentials import LoginCredentials
 from restclient.restclient import Restclient
-from dm_api_account.models.user_envelope import UserEnvelopeModel
+from ..models import *
+from ..utilities import validate_request_json, validate_status_code
 
 
 class LoginApi:
@@ -11,8 +11,14 @@ class LoginApi:
         if headers:
             self.client.session.headers.update(headers)
 
-    def post_v1_account_login(self, json: LoginCredentials, **kwargs) -> Response:
+    def post_v1_account_login(
+            self,
+            json: LoginCredentials,
+            status_code: int = 200,
+            **kwargs
+    ) -> UserEnvelope | Response:
         """
+        :param status_code:
         :param json: login_credentials
         Authenticate via credentials
         :return:
@@ -20,13 +26,15 @@ class LoginApi:
 
         response = self.client.post(
             path=f"/v1/account/login",
-            json=json.dict(by_alias=True, exclude_none=True),
+            json=validate_request_json(json),
             **kwargs
         )
-        UserEnvelopeModel(**response.json())
+        validate_status_code(response, status_code)
+        if response.status_code == status_code:
+            return UserEnvelope(**response.json())
         return response
 
-    def del_v1_account_all(self, **kwargs) -> Response:
+    def del_v1_account_all(self, status_code: int = 204, **kwargs) -> Response:
         """
         Logout from every device
         :return:
@@ -36,9 +44,10 @@ class LoginApi:
             path=f"/v1/account/login/all",
             **kwargs
         )
+        validate_status_code(response, status_code)
         return response
 
-    def del_v1_account_login(self, **kwargs) -> Response:
+    def del_v1_account_login(self, status_code: int, **kwargs) -> Response:
         """
         Logout as current user
         :return:
@@ -48,4 +57,5 @@ class LoginApi:
             path=f"/v1/account/login",
             **kwargs
         )
+        validate_status_code(response, status_code)
         return response

@@ -47,7 +47,7 @@ class AccountApi:
             **kwargs
         )
         validate_status_code(response, status_code)
-        if response.status_code == status_code:
+        if response.status_code == 200:
             return UserDetailsEnvelope(**response.json())
         return response
 
@@ -69,7 +69,7 @@ class AccountApi:
             **kwargs
         )
         validate_status_code(response, status_code)
-        if response.status_code == status_code:
+        if response.status_code == 200:
             return UserEnvelope(**response.json())
         return response
 
@@ -94,10 +94,7 @@ class AccountApi:
         validate_status_code(response, status_code)
         if response.status_code == 201:
             return UserEnvelope(**response.json())
-        elif response.status_code == 400:
-            return BadRequestError(**response.json())
-        else:
-            return response
+        return response
 
     def put_v1_account_password(
             self,

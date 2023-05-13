@@ -1,6 +1,6 @@
-from services.dm_api_account import DmApiAccount
-from services.mailhog import MailhogApi
+from services.dm_api_account import Facade
 import structlog
+import time
 from dm_api_account.models.registration_module import Registration
 
 structlog.configure(
@@ -11,15 +11,30 @@ structlog.configure(
 
 
 def test_post_v1_account():
-    mailhog = MailhogApi(host="http://localhost:5025")
-    api = DmApiAccount(host="http://localhost:5051")
-    json = Registration(
-        login="1test21",
-        email="test1@test21.ru",
-        password="12345678"
+    api = Facade()
+    # Register new user
+    num = 36
+    login = f'1test{num}'
+    email = f'test1@test{num}.ru'
+    password = 'test_password'
+
+    response = api.account.register_new_user(
+        login=login,
+        email=email,
+        password=password
     )
+    # response = api.account_api.post_v1_account(
+    #     json=Registration(
+    #         login=login,
+    #         email=email
+    #     )
+    # )
 
-    response = api.account.post_v1_account(json=json)
+    # Get token
+    api.account.activate_registered_user(login=login)
 
-    # token = mailhog.get_token_from_last_email()
-    # result = api.account.put_v1_account_token(token=token)
+    # # # Login user
+    # api.login.login_user(
+    #     login=login,
+    #     password=password
+    # )

@@ -7,6 +7,6 @@ class LoginCredentials(BaseModel):
     class Config:
         extra = Extra.forbid
 
-    login: Optional[StrictStr] = None
-    password: Optional[StrictStr] = None
+    login: Optional[StrictStr]
+    password: Optional[StrictStr]
     remember_me: Optional[bool] = Field(None, alias='rememberMe')

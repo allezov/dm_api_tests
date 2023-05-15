@@ -31,9 +31,8 @@ class LoginApi:
         )
         print('ну ка что тут?: ', response.json())
         validate_status_code(response, status_code)
-        # if response.status_code == 200:
-        #     return UserEnvelope(**response.json())  # пришлось закомментировать тк если она включена то
-        # AttributeError:# 'UserEnvelope' object has no attribute 'headers'
+        if response.status_code == 200:
+            UserEnvelope(**response.json())
         return response
 
     def del_v1_account_all(self, status_code: int = 204, **kwargs) -> Response:

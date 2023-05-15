@@ -4,7 +4,7 @@ from services.dm_api_account import Facade
 def test_user_behave_1():
     api = Facade()
     # Register new user
-    num = 39
+    num = 45
     login = f'1test{num}'
     email = f'test1@test{num}.ru'
     password = 'test_password'
@@ -27,8 +27,8 @@ def test_user_behave_1():
     token = api.login.get_auth_token(login=f'1test{num}', password='test_password')
 
     # first_example_logout
-    # api.login.logout_user(headers=token)
+    api.login.logout_user(headers=token)
 
-    # second_example_logout
-    api.login.set_headers(headers=token)
-    api.login.logout_user()
+    # # second_example_logout
+    # api.login.set_headers(headers=token)
+    # api.login.logout_user()

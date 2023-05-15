@@ -13,7 +13,7 @@ structlog.configure(
 def test_post_v1_account():
     api = Facade()
     # Register new user
-    num = 36
+    num = 43
     login = f'1test{num}'
     email = f'test1@test{num}.ru'
     password = 'test_password'
@@ -23,18 +23,12 @@ def test_post_v1_account():
         email=email,
         password=password
     )
-    # response = api.account_api.post_v1_account(
-    #     json=Registration(
-    #         login=login,
-    #         email=email
-    #     )
-    # )
 
     # Get token
     api.account.activate_registered_user(login=login)
 
     # # # Login user
-    # api.login.login_user(
-    #     login=login,
-    #     password=password
-    # )
+    api.login.login_user(
+        login=login,
+        password=password
+    )

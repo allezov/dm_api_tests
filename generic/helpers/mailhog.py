@@ -12,6 +12,21 @@ structlog.configure(
 )
 
 
+def decorator(fn):
+    def wrapper(*args, **kwargs):
+        for i in range(5):
+            response = fn(*args, **kwargs)
+            emails = response.json()['items']
+            if len(emails) < 5:
+                print(f'attempt{i}')
+                time.sleep(2)
+                continue
+            else:
+                return response
+
+    return wrapper
+
+
 class MailhogApi:
 
     def __init__(self, host="http://localhost:5025"):
@@ -51,7 +66,6 @@ class MailhogApi:
             user_data = json.loads(email['Content']['Body'])
             if login == user_data.get('Login'):
                 token = user_data['ConfirmationLinkUrl'].split('/')[-1]
-                print(token)
                 return token
         time.sleep(2)
         return self.get_token_by_login(login=login, attempt=attempt - 1)

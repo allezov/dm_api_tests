@@ -13,8 +13,21 @@ def test_db():
     activate = Facade()
     db = DmDatabase(user='postgres', password='admin', host='localhost', database='dm3.5')
 
-    login = '1test49'
+    num = 49
+    login = f'1test{num}'
+    email = f'test1@test{num}.ru'
+    password = 'test_password'
+
+    db.delete_user_by_login(login=login)
+
+    activate.mailhog.delete_all_messages()
+
+    activate.account.register_new_user(
+        login=login,
+        email=email,
+        password=password
+    )
 
     db.activate_user_by_db(login=login)
-    activate.account.activate_registered_user(login=login)
 
+    activate.account.activate_registered_user(login=login)

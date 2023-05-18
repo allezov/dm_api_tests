@@ -21,8 +21,8 @@ def test_post_v1_account():
 
     db = DmDatabase(user='postgres', password='admin', host='localhost', database='dm3.5')
     db.delete_user_by_login(login=login)
-
     dataset = db.get_user_by_login(login=login)
+    print('dataset = ', dataset)
     assert len(dataset) == 0
 
     api.mailhog.delete_all_messages()
@@ -39,8 +39,8 @@ def test_post_v1_account():
         assert row['Activated'] is False, f"User{login} was activated"
 
     # Get token
-    time.sleep(4)
     api.account.activate_registered_user(login=login)
+    time.sleep(4)
     dataset = db.get_user_by_login(login=login)
     for row in dataset:
         assert row['Activated'] is True, f"User{login} not activated"

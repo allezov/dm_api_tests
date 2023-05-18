@@ -13,7 +13,7 @@ class DmDatabase:
         query = f'''
         select * from "public"."Users" where "Login" = '{login}'
         '''
-        return self.db.send_query(query=query)
+        return self.db.send_query(query=query).as_dict()
 
     def delete_user_by_login(self, login):
         query = f'''

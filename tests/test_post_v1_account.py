@@ -1,6 +1,5 @@
 import time
-
-from generic.helpers.dm_db import DmDatabase
+from generic.helpers.orm_db import OrmDatabase
 from services.dm_api_account import Facade
 import structlog
 
@@ -19,9 +18,9 @@ def test_post_v1_account():
     email = f'test1@test{num}.ru'
     password = 'test_password'
 
-    db = DmDatabase(user='postgres', password='admin', host='localhost', database='dm3.5')
-    db.delete_user_by_login(login=login)
-    dataset = db.get_user_by_login(login=login)
+    orm = OrmDatabase()
+    orm.delete_user_by_login(login=login)
+    dataset = orm.get_user_by_login(login=login)
     print('dataset = ', dataset)
     assert len(dataset) == 0
 
@@ -33,7 +32,7 @@ def test_post_v1_account():
         password=password
     )
 
-    dataset = db.get_user_by_login(login=login)
+    dataset = orm.get_user_by_login(login=login)
     for row in dataset:
         assert row['Login'] == login, f"User{login} not registered"
         assert row['Activated'] is False, f"User{login} was activated"
@@ -41,7 +40,7 @@ def test_post_v1_account():
     # Get token
     api.account.activate_registered_user(login=login)
     time.sleep(4)
-    dataset = db.get_user_by_login(login=login)
+    dataset = orm.get_user_by_login(login=login)
     for row in dataset:
         assert row['Activated'] is True, f"User{login} not activated"
 

@@ -1,6 +1,8 @@
+from generic.helpers.orm_db import OrmDatabase
 from generic.helpers.dm_db import DmDatabase
-from services.dm_api_account import Facade
 import structlog
+
+from services.dm_api_account import Facade
 
 structlog.configure(
     processors=[
@@ -11,14 +13,13 @@ structlog.configure(
 
 def test_db():
     activate = Facade()
-    db = DmDatabase(user='postgres', password='admin', host='localhost', database='dm3.5')
-
     num = 49
     login = f'1test{num}'
     email = f'test1@test{num}.ru'
     password = 'test_password'
 
-    db.delete_user_by_login(login=login)
+    orm = OrmDatabase()
+    orm.delete_user_by_login(login=login)
 
     activate.mailhog.delete_all_messages()
 
@@ -28,6 +29,8 @@ def test_db():
         password=password
     )
 
-    db.activate_user_by_db(login=login)
+    orm.activate_user_by_db(login=login)
 
     activate.account.activate_registered_user(login=login)
+
+    orm.orm.close_connection()

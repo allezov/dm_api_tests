@@ -1,13 +1,4 @@
-from services.dm_api_account import Facade
-from dm_api_account.models.reset_password import ResetPassword
-
-
-def test_post_v1_account_password():
-    api = Facade()
-    json = ResetPassword(
-        login="str",
-        email="str"
-    )
-    response = api.account_api.post_v1_account_password(json=json)
+def test_post_v1_account_password(dm_api_facade):
+    response = dm_api_facade.account.reset_user_password(login='1test49', email='test1@test49.ru')
     print(response)
     print(response.url)

@@ -1,9 +1,7 @@
-from services.dm_api_account import Facade
 from dm_api_account.models.change_password import ChangePassword
 
 
-def test_put_v1_account_password():
-    api = Facade()
+def test_put_v1_account_password(dm_api_facade):
     json = ChangePassword(
         login="<string>",
         token="<uuid>",
@@ -11,5 +9,5 @@ def test_put_v1_account_password():
         newPassword="<string>"
     )
 
-    response = api.account_api.put_v1_account_password(json=json)
+    response = dm_api_facade.account_api.put_v1_account_password(json=json)
     print(response)

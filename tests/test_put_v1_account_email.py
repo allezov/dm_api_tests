@@ -1,13 +1,4 @@
-from services.dm_api_account import Facade
-from dm_api_account.models.change_email import ChangeEmail
-
-
-def test_put_v1_account_email():
-    api = Facade()
-    json = ChangeEmail(
-        login="<string>",
-        password="<string>",
-        email="<string>"
-    )
-    response = api.account_api.put_v1_account_email(json=json)
+def test_put_v1_account_email(dm_api_facade):
+    response = dm_api_facade.account.change_user_email(login='1test49', password='test_password',
+                                                       email='test1@test49.ru')
     print(response)

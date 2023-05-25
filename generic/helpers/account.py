@@ -9,17 +9,18 @@ class Account:
         """Set the headers in class helper - Account"""
         self.facade.account_api.client.session.headers.update(headers)
 
-    def register_new_user(self, login: str, email: str, password: str):
-        # print('register_new_user started')
+    def register_new_user(self, login: str, email: str, password: str, **kwargs):
+        print('register_new_user started')
         # поменять на декоратор
         response = self.facade.account_api.post_v1_account(
+            **kwargs,
             json=Registration(
                 login=login,
                 email=email,
-                password=password
+                password=password,
             )
         )
-        # print('register_new_user finished')
+        print('register_new_user finished')
         return response
 
     def activate_registered_user(self, login: str):

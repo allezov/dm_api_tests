@@ -19,9 +19,17 @@ class OrmDatabase:
 
     def delete_user_by_login(self, login):
         query = delete(User).where(User.Login == login)
+        return self.orm.send_bulk_query(query=query)
+
+    def delete_user_by_email(self, email):
+        query = delete(User).where(User.Email == email)
         print(query)
         return self.orm.send_bulk_query(query=query)
 
     def activate_user_by_db(self, login):
         query = update(User).values({User.Activated: True}).where(User.Login == login)
         return self.orm.send_bulk_query(query=query)
+
+    def get_user_email(self):
+        query = select([User.Email])
+        return self.orm.send_query(query=query)

@@ -3,7 +3,6 @@ from requests import Response
 from restclient.restclient import Restclient
 import structlog
 import time
-from dm_api_account.models.registration_module import Registration
 
 structlog.configure(
     processors=[
@@ -29,7 +28,7 @@ def decorator(fn):
 
 class MailhogApi:
 
-    def __init__(self, host="http://localhost:5025"):
+    def __init__(self, host):
         self.host = host
         self.client = Restclient(host=host)
 

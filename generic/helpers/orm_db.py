@@ -5,9 +5,8 @@ from orm_client.orm_client import OrmClient
 
 
 class OrmDatabase:
-    def __init__(self):
-        self.orm = OrmClient()
-        pass
+    def __init__(self, user, password, host, database):
+        self.orm = OrmClient(user, password, host, database)
 
     def get_user_by_login(self, login) -> List[User]:
         query = select([User]).where(User.Login == login)

@@ -10,8 +10,6 @@ class Account:
         self.facade.account_api.client.session.headers.update(headers)
 
     def register_new_user(self, login: str, email: str, password: str, **kwargs):
-        print('register_new_user started')
-        # поменять на декоратор
         response = self.facade.account_api.post_v1_account(
             **kwargs,
             json=Registration(
@@ -20,7 +18,6 @@ class Account:
                 password=password,
             )
         )
-        print('register_new_user finished')
         return response
 
     def activate_registered_user(self, login: str):

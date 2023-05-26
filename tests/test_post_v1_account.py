@@ -1,6 +1,6 @@
 import time
 import random
-from string import ascii_letters, digits, ascii_lowercase
+from string import ascii_letters, digits
 from collections import namedtuple
 import pytest
 from hamcrest import assert_that, has_entries
@@ -108,9 +108,6 @@ def test_post_v1_account_1(dm_api_facade, orm_db, login, password, email, login_
         assert_that(result.json()['errors'], has_entries(
             {
                 'Email': [email_check]
-            } or
-            {
-                'Email': [email_check]
             }
         ))
 
@@ -143,6 +140,7 @@ def test_post_v1_account_1(dm_api_facade, orm_db, login, password, email, login_
             login=login,
             password=password
         )
+        orm_db.delete_user_by_login(login=login)
 
 
 def test_post_v1_account_2(dm_api_facade, orm_db, prepare_user):
@@ -154,7 +152,7 @@ def test_post_v1_account_2(dm_api_facade, orm_db, prepare_user):
     orm_db.delete_user_by_login(login=login)
 
     # Register new user
-    result = dm_api_facade.account.register_new_user(
+    dm_api_facade.account.register_new_user(
         login=login,
         email=email,
         password=password

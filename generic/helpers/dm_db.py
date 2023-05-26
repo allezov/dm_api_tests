@@ -23,11 +23,9 @@ class DmDatabase:
         return self.db.send_bulk_query(query=query)
 
     def activate_user_by_db(self, login):
-        print('after start returning')
         query = f'''
         update "public"."Users"
         set "Activated" = true
         where "Login" = '{login}'
         '''
-        print('before return')
         return self.db.send_bulk_query(query=query)

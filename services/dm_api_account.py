@@ -6,7 +6,7 @@ from dm_api_account.apis import LoginApi
 
 class Facade:
 
-    def __init__(self, host="http://localhost:5051", mailhog=None, headers=None):
+    def __init__(self, host, mailhog=None, headers=None):
         self.login_api = LoginApi(host, headers)
         self.account_api = AccountApi(host, headers)
         self.mailhog = mailhog

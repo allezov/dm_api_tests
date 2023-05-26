@@ -29,7 +29,6 @@ class LoginApi:
             json=validate_request_json(json),
             **kwargs
         )
-        print('ну ка что тут?: ', response.json())
         validate_status_code(response, status_code)
         if response.status_code == 200:
             UserEnvelope(**response.json())

@@ -7,3 +7,4 @@ pyhamcrest
 psycopg2-binary
 records
 sqlalchemy
+vyper-config

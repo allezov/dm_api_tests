@@ -10,8 +10,7 @@ structlog.configure(
 
 
 class OrmClient:
-    def __init__(self, user='postgres', password='admin', host='localhost', database='dm3.5',
-                 isolation_level='AUTOCOMMIT'):
+    def __init__(self, user, password, host, database, isolation_level='AUTOCOMMIT'):
         connection_string = f"postgresql://{user}:{password}@{host}/{database}"
         self.engine = create_engine(connection_string, isolation_level=isolation_level)
         self.db = self.engine.connect()

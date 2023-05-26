@@ -4,9 +4,7 @@ from pydantic import BaseModel
 
 def validate_request_json(json: dict | BaseModel):
     if isinstance(json, dict):
-        print("а мы сюда заходим?")
         return json
-    print("Нет мы тут:", json.dict(by_alias=True, exclude_none=True))
     return json.dict(by_alias=True, exclude_none=True)
 
 

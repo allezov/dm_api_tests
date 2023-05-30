@@ -2,8 +2,11 @@ import pytest
 import structlog
 from vyper import v
 from pathlib import Path
+
+from generic.assertions.post_v1_account import AssertionsPostV1Account
 from generic.helpers.mailhog import MailhogApi
 from generic.helpers.orm_db import OrmDatabase
+from generic.helpers.dm_db import DmDatabase
 from services.dm_api_account import Facade
 
 structlog.configure(
@@ -40,6 +43,22 @@ def orm_db():
         host=v.get('database.dm3_5.host')
     )
     return orm
+
+
+@pytest.fixture
+def dm_db():
+    db = DmDatabase(
+        user=v.get('database.dm3_5.user'),
+        password=v.get('database.dm3_5.password'),
+        database=v.get('database.dm3_5.database'),
+        host=v.get('database.dm3_5.host')
+    )
+    return db
+
+
+@pytest.fixture
+def assertion(dm_db):
+    return AssertionsPostV1Account(dm_db)
 
 
 @pytest.fixture(autouse=True)

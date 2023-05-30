@@ -9,9 +9,9 @@ class Account:
         """Set the headers in class helper - Account"""
         self.facade.account_api.client.session.headers.update(headers)
 
-    def register_new_user(self, login: str, email: str, password: str, **kwargs):
+    def register_new_user(self, login: str, email: str, password: str, status_code: int):
         response = self.facade.account_api.post_v1_account(
-            **kwargs,
+            status_code=status_code,
             json=Registration(
                 login=login,
                 email=email,

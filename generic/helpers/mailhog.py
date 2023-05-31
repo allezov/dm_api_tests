@@ -1,4 +1,6 @@
 import json
+
+import allure
 from requests import Response
 from restclient.restclient import Restclient
 import structlog
@@ -38,12 +40,13 @@ class MailhogApi:
         :param limit:
         :return:
         """
-        response = self.client.get(
-            path=f"/api/v2/messages",
-            params={
-                'limit': limit
-            }
-        )
+        with allure.step('получаем сообщения'):
+            response = self.client.get(
+                path=f"/api/v2/messages",
+                params={
+                    'limit': limit
+                }
+            )
 
         return response
 
@@ -60,13 +63,14 @@ class MailhogApi:
     def get_token_by_login(self, login: str, attempt=5):
         if attempt == 0:
             raise AssertionError(f'Не получили письмо с логином {login}')
-        emails = self.get_api_v2_messages(limit=100).json()['items']
-        for email in emails:
-            user_data = json.loads(email['Content']['Body'])
-            if login == user_data.get('Login'):
-                token = user_data['ConfirmationLinkUrl'].split('/')[-1]
-                return token
-        time.sleep(2)
+        with allure.step('Получаем токен по логину'):
+            emails = self.get_api_v2_messages(limit=100).json()['items']
+            for email in emails:
+                user_data = json.loads(email['Content']['Body'])
+                if login == user_data.get('Login'):
+                    token = user_data['ConfirmationLinkUrl'].split('/')[-1]
+                    return token
+            time.sleep(2)
         return self.get_token_by_login(login=login, attempt=attempt - 1)
 
     def delete_all_messages(self):

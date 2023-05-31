@@ -1,9 +1,9 @@
-import time
 import random
 from string import ascii_letters, digits
 from collections import namedtuple
+
+import allure
 import pytest
-from hamcrest import assert_that, has_entries
 
 
 def random_str():
@@ -63,17 +63,19 @@ def test_symbol(my_str, my_symbol):
         return 1
 
 
-def test_domen(my_str='asd@r.ru'):
+def test_domain_name(my_str='asd@r.ru'):
     if '@.' in my_str:
         return 0
 
 
+@allure.suite('Тесты на проверку метода POST v1/account')
+@allure.sub_suite('Позитивные проверки')
 class TestPostV1Account:
     # @pytest.mark.parametrize('login, password, email, check, status_code', [
     #     (random_valid_login(), random_valid_password(), random_valid_email(), '', 201),
     #     (random_valid_login(), random_invalid_password(), random_valid_email(), 'Shrt', 400),
     #     (random_invalid_login(), random_valid_password(), random_valid_email(), 'Short', 400),
-    #     (random_valid_login(), random_valid_password(), random_invalid_email(), 'Invlid', 400),
+    #     (random_valid_login(), random_valid_password(), random_invalid_email(), 'Invalid', 400),
     #     (random_valid_login(), random_valid_password(), 'test1test36.ru', 'Invalid', 400)
     # ])
 
@@ -87,7 +89,7 @@ class TestPostV1Account:
     def test_create_and_activated_user_with_random_params(
             self,
             dm_api_facade,
-            dm_db,
+            orm_db,
             login,
             password,
             email,
@@ -97,7 +99,7 @@ class TestPostV1Account:
             status_code,
             assertion
     ):
-        dm_db.delete_user_by_login(login=login)
+        orm_db.delete_user_by_login(login=login)
 
         dm_api_facade.mailhog.delete_all_messages()
         result = dm_api_facade.account.register_new_user(login, email, password, status_code)
@@ -118,30 +120,31 @@ class TestPostV1Account:
                 password=password
             )
 
+    @allure.step('подготовка тестового пользователя')
     @pytest.fixture
     def prepare_user(self, dm_api_facade, orm_db):
         user_tuple = namedtuple('User', 'login, email, password')
-
         num = 49
         user = user_tuple(
             login=f'1test{num}',
             email=f'test1@test{num}.ru',
-            password='test_password')
-
+            password='test_password'
+        )
         orm_db.delete_user_by_login(login=user.login)
         dataset = orm_db.get_user_by_login(login=user.login)
         assert len(dataset) == 0
-
         dm_api_facade.mailhog.delete_all_messages()
-
         return user
 
-    def test_post_v1_account_2(self, dm_api_facade, orm_db, prepare_user, assertion, status_code=201):
+    @allure.title('Проверка создания и активация через "prepare_user"')
+    @allure.step('проверка')
+    def test_create_and_activated_user_with_prepare_params(self, dm_api_facade, orm_db, prepare_user, assertion,
+                                                           status_code=201):
         login = prepare_user.login
         password = prepare_user.password
         email = prepare_user.email
         orm_db.delete_user_by_login(login=login)
-        result = dm_api_facade.account.register_new_user(
+        dm_api_facade.account.register_new_user(
             login=login,
             email=email,
             password=password,

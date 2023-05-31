@@ -45,20 +45,40 @@ def orm_db():
     return orm
 
 
+connect = None
+
+
+# @pytest.fixture
+# def orm_db():
+#     global connect
+#     if connect is None:
+#         connect = OrmDatabase(
+#             user=v.get('database.dm3_5.user'),
+#             password=v.get('database.dm3_5.password'),
+#             database=v.get('database.dm3_5.database'),
+#             host=v.get('database.dm3_5.host')
+#         )
+#         return connect
+#     connect.orm.db.close()
+
+
 @pytest.fixture
 def dm_db():
-    db = DmDatabase(
-        user=v.get('database.dm3_5.user'),
-        password=v.get('database.dm3_5.password'),
-        database=v.get('database.dm3_5.database'),
-        host=v.get('database.dm3_5.host')
-    )
-    return db
+    global connect
+    if connect is None:
+        connect = DmDatabase(
+            user=v.get('database.dm3_5.user'),
+            password=v.get('database.dm3_5.password'),
+            database=v.get('database.dm3_5.database'),
+            host=v.get('database.dm3_5.host')
+        )
+    yield connect
+    connect.db.db.close()
 
 
 @pytest.fixture
-def assertion(dm_db):
-    return AssertionsPostV1Account(dm_db)
+def assertion(orm_db):
+    return AssertionsPostV1Account(orm_db)
 
 
 @pytest.fixture(autouse=True)

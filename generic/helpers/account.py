@@ -1,3 +1,5 @@
+import allure
+
 from dm_api_account.models import Registration, ResetPassword, ChangeEmail
 
 
@@ -21,10 +23,11 @@ class Account:
         return response
 
     def activate_registered_user(self, login: str):
-        token = self.facade.mailhog.get_token_by_login(login=login)
-        response = self.facade.account_api.put_v1_account_token(
-            token=token
-        )
+        with allure.step('Main activate user'):
+            token = self.facade.mailhog.get_token_by_login(login=login)
+            response = self.facade.account_api.put_v1_account_token(
+                token=token
+            )
         return response
 
     def get_current_user(self, **kwargs):

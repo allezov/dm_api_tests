@@ -21,7 +21,7 @@ class OrmDatabase:
         return self.orm.send_query(query=query)
 
     def delete_user_by_login(self, login):
-        with allure.step('удаляем пользователя из БД по логину'):
+        with allure.step('Удаляем пользователя из БД по логину'):
             query = delete(User).where(User.Login == login)
         return self.orm.send_bulk_query(query=query)
 

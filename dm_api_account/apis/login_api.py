@@ -24,7 +24,7 @@ class LoginApi:
         Authenticate via credentials
         :return:
         """
-        with allure.step('login new user'):
+        with allure.step('Аутентификация'):
             response = self.client.post(
                 path=f"/v1/account/login",
                 json=validate_request_json(json),

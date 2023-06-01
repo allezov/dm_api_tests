@@ -55,9 +55,10 @@ class MailhogApi:
         Get user activation token from last email
         :return:
         """
-        emails = self.get_api_v2_messages(limit=1).json()
-        token_url = json.loads(emails['items'][0]['Content']['Body'])['ConfirmationLinkUrl']
-        token = token_url.split('/')[-1]
+        with allure.step('получаем токен из последнего сообщения'):
+            emails = self.get_api_v2_messages(limit=1).json()
+            token_url = json.loads(emails['items'][0]['Content']['Body'])['ConfirmationLinkUrl']
+            token = token_url.split('/')[-1]
         return token
 
     def get_token_by_login(self, login: str, attempt=5):
@@ -74,5 +75,6 @@ class MailhogApi:
         return self.get_token_by_login(login=login, attempt=attempt - 1)
 
     def delete_all_messages(self):
-        response = self.client.delete(path='/api/v1/messages')
+        with allure.step('Удаляем все сообщения'):
+            response = self.client.delete(path='/api/v1/messages')
         return response

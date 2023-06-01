@@ -1,6 +1,6 @@
 import allure
 import pytest
-
+from generic.helpers.dm_db import DmDatabase
 from generic.helpers.orm_db import OrmDatabase
 from hamcrest import assert_that, has_properties, has_entries
 
@@ -43,9 +43,10 @@ class AssertionsPostV1Account:
 
     def check_user_was_activated(self, login):
         with allure.step('check activate user'):
+            print('Внутри чека юзер активата')
             dataset = self.db.get_user_by_login(login=login)
             for row in dataset:
-                print(row)
+                print('Джедай', row)
                 assert_that(row, has_properties(
                     {
                         'Activated': True

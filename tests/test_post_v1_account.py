@@ -100,7 +100,6 @@ class TestPostV1Account:
             assertion
     ):
         orm_db.delete_user_by_login(login=login)
-
         dm_api_facade.mailhog.delete_all_messages()
         result = dm_api_facade.account.register_new_user(login, email, password, status_code)
         check_assert = assertion.check_user_was_created(
@@ -114,7 +113,7 @@ class TestPostV1Account:
         )
         if check_assert:
             dm_api_facade.account.activate_registered_user(login=login)
-            assertion.check_user_was_activated(login)
+            assertion.check_user_was_activated(login=login)
             dm_api_facade.login.login_user(
                 login=login,
                 password=password

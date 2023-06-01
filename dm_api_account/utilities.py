@@ -11,5 +11,5 @@ def validate_request_json(json: dict | BaseModel):
 
 def validate_status_code(response: requests.Response, status_code: int):
     with allure.step('Check valid status code'):
-        assert response.status_code == status_code,\
+        assert response.status_code == status_code, \
             f"Статус код ответа должен быть = {status_code}, но он = {response.status_code}"

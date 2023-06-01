@@ -26,7 +26,8 @@ class OrmClient:
             event='request',
             query=str(query),
         )
-        dataset = self.db.execute(statement=query)
+        # with self.db as connection:
+        dataset = self.db.execute(statement=query)  # self.db - connection
         result = [row for row in dataset]
         log.msg(
             event='response',

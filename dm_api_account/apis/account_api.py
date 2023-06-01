@@ -24,7 +24,7 @@ class AccountApi:
         Register new user
         :return:
         """
-        with allure.step('registration new user'):
+        with allure.step('Регистрация нового пользователя'):
             response = self.client.post(
                 path=f"/v1/account",
                 json=validate_request_json(json),
@@ -42,7 +42,7 @@ class AccountApi:
         Get current user
         :return:
         """
-        with allure.step('получаем текущего пользователя'):
+        with allure.step('Получаем текущего пользователя'):
             response = self.client.get(
                 path=f"/v1/account",
                 **kwargs
@@ -64,7 +64,7 @@ class AccountApi:
         Activate registered user
         :return:
         """
-        with allure.step('activate user'):
+        with allure.step('Активируем зарегистрированного пользователя'):
             response = self.client.put(
                 path=f"/v1/account/{token}",
                 **kwargs
@@ -86,7 +86,7 @@ class AccountApi:
         Reset registered user password
         :return:
         """
-        with allure.step('сбрасываем пароль'):
+        with allure.step('Сбрасываем пароль'):
             response = self.client.post(
                 path=f"/v1/account/password",
                 json=validate_request_json(json),

@@ -2,10 +2,10 @@ import pytest
 import structlog
 from vyper import v
 from pathlib import Path
-
 from generic.assertions.post_v1_account import AssertionsPostV1Account
 from generic.helpers.mailhog import MailhogApi
 from generic.helpers.orm_db import OrmDatabase
+from orm_client.orm_client import OrmClient
 from generic.helpers.dm_db import DmDatabase
 from services.dm_api_account import Facade
 
@@ -45,35 +45,38 @@ def orm_db():
     return orm
 
 
-connect = None
+# connections = None
 
 
-# @pytest.fixture
+# @pytest.fixture(scope='session')
 # def orm_db():
-#     global connect
-#     if connect is None:
-#         connect = OrmDatabase(
+#     global connections
+#     if connections is None:
+#         connections = OrmDatabase(
 #             user=v.get('database.dm3_5.user'),
 #             password=v.get('database.dm3_5.password'),
 #             database=v.get('database.dm3_5.database'),
 #             host=v.get('database.dm3_5.host')
 #         )
-#         return connect
-#     connect.orm.db.close()
+#     yield connections
+#     connections.orm.close_connection()
 
 
-@pytest.fixture
-def dm_db():
-    global connect
-    if connect is None:
-        connect = DmDatabase(
-            user=v.get('database.dm3_5.user'),
-            password=v.get('database.dm3_5.password'),
-            database=v.get('database.dm3_5.database'),
-            host=v.get('database.dm3_5.host')
-        )
-    yield connect
-    connect.db.db.close()
+# connect = None
+
+
+# @pytest.fixture
+# def dm_db():
+#     global connect
+#     if connect is None:
+#         connect = DmDatabase(
+#             user=v.get('database.dm3_5.user'),
+#             password=v.get('database.dm3_5.password'),
+#             database=v.get('database.dm3_5.database'),
+#             host=v.get('database.dm3_5.host')
+#         )
+#     yield connect
+#     connect.db.db.close()
 
 
 @pytest.fixture

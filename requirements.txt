@@ -1,5 +1,7 @@
 git+https://github.com/allezov/orm_client.git
 git+https://github.com/allezov/restclient.git
+git+https://github.com/allezov/db_client.git
+git+https://github.com/allezov/dm_api_account.git
 requests
 pytest
 structlog

@@ -5,7 +5,7 @@ from dm_api_account.models import LoginCredentials
 class Login:
     def __init__(self, facade):
         self.facade = facade
- авы
+
     def set_headers(self, headers):
         """Set the headers in class helper - Login"""
         self.facade.login_api.client.session.headers.update(headers)

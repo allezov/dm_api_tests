@@ -1,3 +1,5 @@
+git+https://github.com/allezov/orm_client.git
+git+https://github.com/allezov/restclient.git
 requests
 pytest
 structlog
@@ -8,3 +10,4 @@ psycopg2-binary
 records
 sqlalchemy
 vyper-config
+restclient

@@ -43,10 +43,8 @@ class AssertionsPostV1Account:
 
     def check_user_was_activated(self, login):
         with allure.step('check activate user'):
-            print('Внутри чека юзер активата')
             dataset = self.db.get_user_by_login(login=login)
             for row in dataset:
-                print('Джедай', row)
                 assert_that(row, has_properties(
                     {
                         'Activated': True

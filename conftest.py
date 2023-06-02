@@ -5,8 +5,6 @@ from pathlib import Path
 from generic.assertions.post_v1_account import AssertionsPostV1Account
 from generic.helpers.mailhog import MailhogApi
 from generic.helpers.orm_db import OrmDatabase
-from orm_client.orm_client import OrmClient
-from generic.helpers.dm_db import DmDatabase
 from services.dm_api_account import Facade
 
 structlog.configure(

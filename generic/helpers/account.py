@@ -1,6 +1,6 @@
 import allure
 
-from dm_api_account.models import Registration, ResetPassword, ChangeEmail
+from apis.dm_api_account.models import Registration, ResetPassword, ChangeEmail
 
 
 class Account:
@@ -18,7 +18,7 @@ class Account:
                 json=Registration(
                     login=login,
                     email=email,
-                    password=password,
+                    password=password
                 )
             )
         return response

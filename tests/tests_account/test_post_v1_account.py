@@ -1,7 +1,7 @@
 import random
 from string import ascii_letters, digits
 from collections import namedtuple
-
+from data.post_v1_account import PostV1Account as user_data
 import allure
 import pytest
 
@@ -123,11 +123,10 @@ class TestPostV1Account:
     @pytest.fixture
     def prepare_user(self, dm_api_facade, orm_db):
         user_tuple = namedtuple('User', 'login, email, password')
-        num = 49
         user = user_tuple(
-            login=f'1test{num}',
-            email=f'test1@test{num}.ru',
-            password='test_password'
+            login=user_data.login,
+            password=user_data.password,
+            email=user_data.email
         )
         orm_db.delete_user_by_login(login=user.login)
         dataset = orm_db.get_user_by_login(login=user.login)

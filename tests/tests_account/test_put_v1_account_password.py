@@ -1,4 +1,4 @@
-from dm_api_account.models.change_password import ChangePassword
+from apis.dm_api_account.models.change_password import ChangePassword
 
 
 def test_put_v1_account_password(dm_api_facade):

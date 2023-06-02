@@ -8,6 +8,5 @@ class Registration(BaseModel):
         extra = Extra.forbid
 
     login: Optional[StrictStr] = Field(None, description='Login')
+    password: Optional[StrictStr] = Field(None, description='Password')
     email: Optional[StrictStr] = Field(None, description='Email')
-    password: Optional[StrictStr] = Field(description='password', default='test_password')
-

@@ -1,5 +1,5 @@
 import allure
-from dm_api_account.models import LoginCredentials
+from dm_api_account_clients.models import LoginCredentials
 
 
 class Login:

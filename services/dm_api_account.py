@@ -1,7 +1,7 @@
 from generic.helpers.account import Account
 from generic.helpers.login import Login
-from dm_api_account.apis.account_api import AccountApi
-from dm_api_account.apis.login_api import LoginApi
+from dm_api_account_clients.apis.account_api import AccountApi
+from dm_api_account_clients.apis.login_api import LoginApi
 
 
 class Facade:

@@ -4,7 +4,8 @@ from dm_api_account.models import LoginCredentials
 
 class Login:
     def __init__(self, facade):
-        self.facade = facade
+        from services.dm_api_account import Facade
+        self.facade: Facade = facade
 
     def set_headers(self, headers):
         """Set the headers in class helper - Login"""
@@ -12,11 +13,11 @@ class Login:
 
     def login_user(self, login: str, password: str, remember_me: bool = True):
         with allure.step('login_user'):
-            response = self.facade.login_api.post_v1_account_login(
-                json=LoginCredentials(
+            response = self.facade.login_api.v1_account_login_post(
+                login_credentials=LoginCredentials(
                     login=login,
                     password=password,
-                    rememberMe=remember_me,
+                    remember_me=remember_me,
                 )
             )
         return response
@@ -28,4 +29,8 @@ class Login:
 
     def logout_user(self, **kwargs):
         with allure.step('logout_user'):
-            return self.facade.login_api.del_v1_account_login(**kwargs)
+            return self.facade.login_api.v1_account_login_delete(**kwargs)
+
+    def logout_user_from_all_devices(self, **kwargs):
+        with allure.step('logout_user_all'):
+            return self.facade.login_api.v1_account_login_all_delete(**kwargs)

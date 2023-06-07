@@ -5,17 +5,18 @@ from dm_api_account.models import Registration, ResetPassword, ChangeEmail
 
 class Account:
     def __init__(self, facade):
-        self.facade = facade
+        from services.dm_api_account import Facade
+        self.facade: Facade = facade
 
     def set_headers(self, headers):
         """Set the headers in class helper - Account"""
         self.facade.account_api.client.session.headers.update(headers)
 
-    def register_new_user(self, login: str, email: str, password: str, status_code: int):
+    def register_new_user(self, login: str, email: str, password: str, status_code: int, **kwargs):
         with allure.step('registration new user'):
-            response = self.facade.account_api.post_v1_account(
-                status_code=status_code,
-                json=Registration(
+            response = self.facade.account_api.register(
+                **kwargs,
+                registration=Registration(
                     login=login,
                     email=email,
                     password=password
@@ -26,7 +27,7 @@ class Account:
     def activate_registered_user(self, login: str):
         with allure.step('activate_registered_user'):
             token = self.facade.mailhog.get_token_by_login(login=login)
-            response = self.facade.account_api.put_v1_account_token(
+            response = self.facade.account_api.activate(
                 token=token
             )
         return response

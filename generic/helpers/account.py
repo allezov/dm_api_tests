@@ -12,7 +12,7 @@ class Account:
         """Set the headers in class helper - Account"""
         self.facade.account_api.client.session.headers.update(headers)
 
-    def register_new_user(self, login: str, email: str, password: str, status_code: int, **kwargs):
+    def register_new_user(self, login: str, email: str, password: str, **kwargs):
         with allure.step('registration new user'):
             response = self.facade.account_api.register(
                 **kwargs,

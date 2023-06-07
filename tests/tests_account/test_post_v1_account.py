@@ -4,6 +4,7 @@ from collections import namedtuple
 from data.post_v1_account import PostV1Account as user_data
 import allure
 import pytest
+from generic.assertions.response_checker import check_status_code_http
 
 
 def random_str():
@@ -71,21 +72,16 @@ def test_domain_name(my_str='asd@r.ru'):
 @allure.suite('Тесты на проверку метода POST v1/account')
 @allure.sub_suite('Позитивные проверки')
 class TestPostV1Account:
-    # @pytest.mark.parametrize('login, password, email, check, status_code', [
-    #     (random_valid_login(), random_valid_password(), random_valid_email(), '', 201),
-    #     (random_valid_login(), random_invalid_password(), random_valid_email(), 'Shrt', 400),
-    #     (random_invalid_login(), random_valid_password(), random_valid_email(), 'Short', 400),
-    #     (random_valid_login(), random_valid_password(), random_invalid_email(), 'Invalid', 400),
-    #     (random_valid_login(), random_valid_password(), 'test1test36.ru', 'Invalid', 400)
-    # ])
 
-    @pytest.mark.parametrize('login, password, email, login_check, password_check,email_check, status_code', [
-        (random_valid_login(), random_valid_password(), random_valid_email(), '', '', '', 201),
-        (random_valid_login(), random_invalid_password(), random_valid_email(), '', 'Short', '', 400),
-        (random_invalid_login(), random_valid_password(), random_valid_email(), 'Short', '', '', 400),
-        (random_valid_login(), random_valid_password(), random_invalid_email(), '', '', 'Invalid', 400),
-        (random_valid_login(), random_valid_password(), 'login2@test.ru', '', '', 'Taken', 400)
-    ])
+    input_data = [
+        (random_valid_login(), random_valid_password(), random_valid_email(), 201, ''),
+        (random_valid_login(), random_invalid_password(), random_valid_email(), 400, {"Password": ["Short"]}),
+        (random_invalid_login(), random_valid_password(), random_valid_email(), 400, {"Login": ["Short"]}),
+        (random_valid_login(), random_valid_password(), random_invalid_email(), 400, {"Email": ["Invalid"]}),
+        (random_valid_login(), random_valid_password(), 'test1@test49.ru', 400, {"Email": ["Taken"]}),
+    ]
+
+    @pytest.mark.parametrize('login, password, email, status_code, check', input_data)
     def test_create_and_activated_user_with_random_params(
             self,
             dm_api_facade,
@@ -93,25 +89,17 @@ class TestPostV1Account:
             login,
             password,
             email,
-            login_check,
-            password_check,
-            email_check,
+            check,
             status_code,
             assertion
     ):
         orm_db.delete_user_by_login(login=login)
         dm_api_facade.mailhog.delete_all_messages()
-        result = dm_api_facade.account.register_new_user(login, email, password, status_code)
-        check_assert = assertion.check_user_was_created(
-            result=result,
-            login=login,
-            password=password,
-            status_code=status_code,
-            login_check=login_check,
-            password_check=password_check,
-            email_check=email_check
-        )
-        if check_assert:
+        with check_status_code_http(expected_status_code=status_code, expected_result=check):
+            dm_api_facade.account.register_new_user(login, email, password)
+
+        if status_code == 201:
+            assertion.check_user_was_created_for_prepare(login=login)
             dm_api_facade.account.activate_registered_user(login=login)
             assertion.check_user_was_activated(login=login)
             dm_api_facade.login.login_user(
@@ -146,7 +134,6 @@ class TestPostV1Account:
             login=login,
             email=email,
             password=password,
-            status_code=status_code
         )
         assertion.check_user_was_created_for_prepare(login=login)
         dm_api_facade.account.activate_registered_user(login=login)

@@ -1,3 +1,5 @@
+from collections import namedtuple
+from data.post_v1_account import PostV1Account as user_data
 import pytest
 import structlog
 from vyper import v
@@ -30,6 +32,22 @@ def dm_api_facade(mailhog):
     return Facade(host=v.get('service.dm_api_account'),
                   mailhog=mailhog
                   )
+
+
+@pytest.fixture
+def prepare_user(dm_api_facade, orm_db):
+    user_tuple = namedtuple('User', 'login, email, password, new_password')
+    user = user_tuple(
+        login=user_data.login,
+        password=user_data.password,
+        email=user_data.email,
+        new_password=user_data.new_password
+    )
+    orm_db.delete_user_by_login(login=user.login)
+    dataset = orm_db.get_user_by_login(login=user.login)
+    assert len(dataset) == 0
+    dm_api_facade.mailhog.delete_all_messages()
+    return user
 
 
 @pytest.fixture

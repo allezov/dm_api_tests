@@ -1,3 +1,5 @@
+import json
+
 import allure
 from dm_api_account.models import LoginCredentials
 
@@ -25,6 +27,8 @@ class Login:
     def get_auth_token(self, login: str, password: str, remember_me: bool = True):
         with allure.step('get_auth_token'):
             result = self.login_user(login=login, password=password, remember_me=remember_me)
+            print('result is ')
+            print(type(result))
             return {'X-Dm-Auth-Token': result.headers['X-Dm-Auth-Token']}
 
     def logout_user(self, **kwargs):

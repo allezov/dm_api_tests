@@ -8,3 +8,8 @@ psycopg2-binary
 records
 sqlalchemy
 vyper-config
+pytest-asyncio
+betterproto
+grpclib
+grpcio-tools
+mypy-protobuf

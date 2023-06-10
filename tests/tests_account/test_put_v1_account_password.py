@@ -1,3 +1,5 @@
+import time
+
 from data.post_v1_account import PostV1Account as user_data
 
 
@@ -14,10 +16,11 @@ def test_put_v1_account_password(dm_api_facade, mailhog, orm_db, prepare_user):
     )
     dm_api_facade.account.activate_registered_user(login=login)
 
-    token = mailhog.get_token_by_login(login=login)
-    print(token)
+    dm_api_facade.account.reset_user_password(login=login, email=email)
+    time.sleep(2)
 
-    # Не понимаю почему token - invalid
+    token = mailhog.get_token_from_last_email()
+    print(token)
     dm_api_facade.account.change_user_password(login=login, token=token, old_password=password,
                                                new_password=new_password)
 

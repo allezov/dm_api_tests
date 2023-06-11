@@ -1,7 +1,5 @@
 import time
 
-from data.post_v1_account import PostV1Account as user_data
-
 
 def test_put_v1_account_password(dm_api_facade, mailhog, orm_db, prepare_user):
     login = prepare_user.login
@@ -21,8 +19,13 @@ def test_put_v1_account_password(dm_api_facade, mailhog, orm_db, prepare_user):
 
     token = mailhog.get_token_from_last_email()
     print(token)
-    dm_api_facade.account.change_user_password(login=login, token=token, old_password=password,
-                                               new_password=new_password)
 
-    # dm_api_facade.login.login_user(login=login, password=new_password)
+    response = dm_api_facade.login.login_user(login=login, password=new_password)
+
+    print(response)
+
+    # dm_api_facade.account.change_user_password(login=login, token=token, old_password=password,
+    #                                            new_password=new_password)
+
+
     # orm_db.delete_user_by_login(login=login)

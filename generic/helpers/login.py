@@ -29,3 +29,7 @@ class Login:
     def logout_user(self, **kwargs):
         with allure.step('logout_user'):
             return self.facade.login_api.del_v1_account_login(**kwargs)
+
+    def logout_user_from_every_device(self, **kwargs):
+        with allure.step('logout_user_everywhere'):
+            return self.facade.login_api.del_v1_account_all(**kwargs)

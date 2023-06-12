@@ -1,13 +1,16 @@
-from hamcrest import assert_that, has_properties
-from apis.dm_api_account.models.user_envelope import UserRole
 
+def test_put_v1_account_token(dm_api_facade, prepare_user, assertion):
+    login = prepare_user.login
+    password = prepare_user.password
+    email = prepare_user.email
 
-def test_put_v1_account_token(dm_api_facade):
-    response = dm_api_facade.account_api.put_v1_account_token(token='ba82b3b8-1831-4c83-b02c-ebe0c6edadab',
-                                                              status_code=200)
-    assert_that(response.resource, has_properties(
-        {
-            'login': "1test19",
-            'roles': [UserRole.guest, UserRole.player]
-        }
-    ))
+    dm_api_facade.account.register_new_user(
+        login=login,
+        email=email,
+        password=password,
+        status_code=201
+    )
+    assertion.check_user_was_created_for_prepare(login=login)
+    dm_api_facade.account.activate_registered_user(login=login)
+    assertion.check_user_was_activated(login=login)
+

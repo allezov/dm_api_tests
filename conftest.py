@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 import pytest
 import structlog
 from vyper import v
@@ -6,6 +8,7 @@ from generic.assertions.post_v1_account import AssertionsPostV1Account
 from generic.helpers.mailhog import MailhogApi
 from generic.helpers.orm_db import OrmDatabase
 from services.dm_api_account import Facade
+from data.post_v1_account import PostV1Account as user_data
 
 structlog.configure(
     processors=[
@@ -91,6 +94,22 @@ def set_config(request):
     v.read_in_config()
     for option in options:
         v.set(option, request.config.getoption(f'--{option}'))
+
+
+@pytest.fixture
+def prepare_user(dm_api_facade, orm_db):
+    user_tuple = namedtuple('User', 'login, email, password, new_password')
+    user = user_tuple(
+        login=user_data.login,
+        password=user_data.password,
+        email=user_data.email,
+        new_password=user_data.new_password
+    )
+    orm_db.delete_user_by_login(login=user.login)
+    dataset = orm_db.get_user_by_login(login=user.login)
+    assert len(dataset) == 0
+    dm_api_facade.mailhog.delete_all_messages()
+    return user
 
 
 def pytest_addoption(parser):

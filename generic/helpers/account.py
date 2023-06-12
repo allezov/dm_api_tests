@@ -33,14 +33,17 @@ class Account:
             )
         return response
 
-    def get_current_user(self, **kwargs):
+    def get_current_user(self, x_dm_auth_token: str,**kwargs):
         with allure.step('get_current_user'):
-            return self.facade.account_api.get_v1_account(**kwargs)
+            print('йооу1')
+            token = self.facade.account_api.get_current(x_dm_auth_token=x_dm_auth_token, **kwargs)
+            print('йооу2')
+            return token
 
-    def reset_user_password(self, login: str, email: str):
+    def reset_user_password(self, login: str, email: str, x_dm_auth_token: str):
         with allure.step('reset_user_password'):
-            print('123')
             response = self.facade.account_api.reset_password(
+                x_dm_auth_token=x_dm_auth_token,
                 reset_password=ResetPassword(
                     login=login,
                     email=email
@@ -59,9 +62,10 @@ class Account:
             )
         return response
 
-    def change_user_password(self, login: str, token: str, old_password: str, new_password: str):
+    def change_user_password(self, login: str, token: str, old_password: str, new_password: str, x_dm_auth_token: str):
         with allure.step('change_user_password'):
             response = self.facade.account_api.change_password(
+                x_dm_auth_token=x_dm_auth_token,
                 change_password=ChangePassword(
                     login=login,
                     token=token,

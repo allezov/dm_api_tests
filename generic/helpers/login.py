@@ -28,14 +28,12 @@ class Login:
     def get_auth_token(self, login: str, password: str, remember_me: bool = True):
         with allure.step('get_auth_token'):
             result = self.login_user(login=login, password=password, remember_me=remember_me)
-            print('result is ')
-            print(type(result))
-            return {'X-Dm-Auth-Token': result.headers['X-Dm-Auth-Token']}
+            return {'X-Dm-Auth-Token': result[2]['X-Dm-Auth-Token']}
 
-    def logout_user(self, **kwargs):
+    def logout_user(self, x_dm_auth_token: str, **kwargs):
         with allure.step('logout_user'):
-            return self.facade.login_api.v1_account_login_delete(**kwargs)
+            return self.facade.login_api.v1_account_login_delete(x_dm_auth_token=x_dm_auth_token, **kwargs)
 
-    def logout_user_from_all_devices(self, **kwargs):
+    def logout_user_from_all_devices(self, x_dm_auth_token: str, **kwargs):
         with allure.step('logout_user_all'):
-            return self.facade.login_api.v1_account_login_all_delete(**kwargs)
+            return self.facade.login_api.v1_account_login_all_delete(x_dm_auth_token=x_dm_auth_token, **kwargs)

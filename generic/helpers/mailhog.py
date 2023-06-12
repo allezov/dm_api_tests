@@ -57,7 +57,7 @@ class MailhogApi:
         """
         with allure.step('получаем токен из последнего сообщения'):
             emails = self.get_api_v2_messages(limit=1).json()
-            token_url = json.loads(emails['items'][0]['Content']['Body'])['ConfirmationLinkUrl']
+            token_url = json.loads(emails['items'][0]['Content']['Body'])['ConfirmationLinkUri']
             token = token_url.split('/')[-1]
         return token
 

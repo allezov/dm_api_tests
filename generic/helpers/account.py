@@ -1,6 +1,6 @@
 import allure
 
-from apis.dm_api_account.models import Registration, ResetPassword, ChangeEmail
+from apis.dm_api_account.models import Registration, ResetPassword, ChangeEmail, ChangePassword
 
 
 class Account:
@@ -52,6 +52,18 @@ class Account:
                     login=login,
                     password=password,
                     email=email
+                )
+            )
+        return response
+
+    def change_user_password(self, login: str, password: str, new_password: str, token: str):
+        with allure.step('change_user_email'):
+            response = self.facade.account_api.put_v1_account_password(
+                json=ChangePassword(
+                    login=login,
+                    token=token,
+                    oldPassword=password,
+                    newPassword=new_password,
                 )
             )
         return response

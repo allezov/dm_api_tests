@@ -119,21 +119,6 @@ class TestPostV1Account:
                 password=password
             )
 
-    @allure.step('подготовка тестового пользователя')
-    @pytest.fixture
-    def prepare_user(self, dm_api_facade, orm_db):
-        user_tuple = namedtuple('User', 'login, email, password')
-        user = user_tuple(
-            login=user_data.login,
-            password=user_data.password,
-            email=user_data.email
-        )
-        orm_db.delete_user_by_login(login=user.login)
-        dataset = orm_db.get_user_by_login(login=user.login)
-        assert len(dataset) == 0
-        dm_api_facade.mailhog.delete_all_messages()
-        return user
-
     @allure.title('Проверка создания и активация через "prepare_user"')
     @allure.step('проверка')
     def test_create_and_activated_user_with_prepare_params(self, dm_api_facade, orm_db, prepare_user, assertion,

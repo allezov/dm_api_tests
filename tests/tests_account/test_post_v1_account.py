@@ -71,14 +71,6 @@ def test_domain_name(my_str='asd@r.ru'):
 @allure.suite('Тесты на проверку метода POST v1/account')
 @allure.sub_suite('Позитивные проверки')
 class TestPostV1Account:
-    # @pytest.mark.parametrize('login, password, email, check, status_code', [
-    #     (random_valid_login(), random_valid_password(), random_valid_email(), '', 201),
-    #     (random_valid_login(), random_invalid_password(), random_valid_email(), 'Shrt', 400),
-    #     (random_invalid_login(), random_valid_password(), random_valid_email(), 'Short', 400),
-    #     (random_valid_login(), random_valid_password(), random_invalid_email(), 'Invalid', 400),
-    #     (random_valid_login(), random_valid_password(), 'test1test36.ru', 'Invalid', 400)
-    # ])
-
     @pytest.mark.parametrize('login, password, email, login_check, password_check,email_check, status_code', [
         (random_valid_login(), random_valid_password(), random_valid_email(), '', '', '', 201),
         (random_valid_login(), random_invalid_password(), random_valid_email(), '', 'Short', '', 400),
@@ -118,8 +110,6 @@ class TestPostV1Account:
                 login=login,
                 password=password
             )
-
-
 
     @allure.title('Проверка создания и активация через "prepare_user"')
     @allure.step('проверка')

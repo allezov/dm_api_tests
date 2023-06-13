@@ -54,16 +54,6 @@ def random_invalid_email():
     return string + '@'
 
 
-def check_my_symbol(my_str, my_symbol):
-    num = sum(1 for i in my_str if i == my_symbol)
-    return num
-
-
-def test_symbol(my_str, my_symbol):
-    if my_symbol in my_str:
-        return 1
-
-
 def test_domain_name(my_str='asd@r.ru'):
     if '@.' in my_str:
         return 0

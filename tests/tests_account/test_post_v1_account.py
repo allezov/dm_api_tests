@@ -53,16 +53,6 @@ def random_invalid_email():
     return string + '@'
 
 
-def check_my_symbol(my_str, my_symbol):
-    num = sum(1 for i in my_str if i == my_symbol)
-    return num
-
-
-def test_symbol(my_str, my_symbol):
-    if my_symbol in my_str:
-        return 1
-
-
 def test_domain_name(my_str='asd@r.ru'):
     if '@.' in my_str:
         return 0
@@ -71,13 +61,6 @@ def test_domain_name(my_str='asd@r.ru'):
 @allure.suite('Тесты на проверку метода POST v1/account')
 @allure.sub_suite('Позитивные проверки')
 class TestPostV1Account:
-    # @pytest.mark.parametrize('login, password, email, check, status_code', [
-    #     (random_valid_login(), random_valid_password(), random_valid_email(), '', 201),
-    #     (random_valid_login(), random_invalid_password(), random_valid_email(), 'Shrt', 400),
-    #     (random_invalid_login(), random_valid_password(), random_valid_email(), 'Short', 400),
-    #     (random_valid_login(), random_valid_password(), random_invalid_email(), 'Invalid', 400),
-    #     (random_valid_login(), random_valid_password(), 'test1test36.ru', 'Invalid', 400)
-    # ])
 
     @pytest.mark.parametrize('login, password, email, login_check, password_check,email_check, status_code', [
         (random_valid_login(), random_valid_password(), random_valid_email(), '', '', '', 201),

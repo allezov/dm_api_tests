@@ -9,8 +9,6 @@ def test_del_v1_account_login(dm_api_facade,prepare_user):
         password=password,
     )
     dm_api_facade.account.activate_registered_user(login=login)
-
     response = dm_api_facade.login.login_user(login=login, password=password)
     x_dm_auth_token = response[2]['X-Dm-Auth-Token']
-
     dm_api_facade.login.logout_user(x_dm_auth_token=x_dm_auth_token)

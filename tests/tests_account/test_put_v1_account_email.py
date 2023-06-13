@@ -12,4 +12,3 @@ def test_put_v1_account_email(dm_api_facade,prepare_user):
     dm_api_facade.account.activate_registered_user(login=login)
     dm_api_facade.account.change_user_email(login=login, password=password, email=email)
 
-

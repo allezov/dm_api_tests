@@ -13,5 +13,3 @@ def test_del_v1_account_login(dm_api_facade, prepare_user):
     token = dm_api_facade.login.get_auth_token(login=login, password=password)
     dm_api_facade.login.set_headers(headers=token)
     dm_api_facade.login.logout_user()
-
-

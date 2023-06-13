@@ -13,4 +13,3 @@ def test_put_v1_account_token(dm_api_facade, prepare_user, assertion):
     assertion.check_user_was_created_for_prepare(login=login)
     dm_api_facade.account.activate_registered_user(login=login)
     assertion.check_user_was_activated(login=login)
-

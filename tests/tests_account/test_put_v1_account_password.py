@@ -25,4 +25,3 @@ def test_put_v1_account_password(dm_api_facade, prepare_user, mailhog):
         password=password,
         new_password=new_password
     )
-

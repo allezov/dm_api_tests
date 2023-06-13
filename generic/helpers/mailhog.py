@@ -50,14 +50,18 @@ class MailhogApi:
 
         return response
 
-    def get_token_from_last_email(self) -> str:
+    def get_token_from_last_email(self, token_type: str = 'password') -> str:
         """
         Get user activation token from last email
+        По умолчанию
         :return:
         """
         with allure.step('получаем токен из последнего сообщения'):
             emails = self.get_api_v2_messages(limit=10).json()
-            token_url = json.loads(emails['items'][0]['Content']['Body'])['ConfirmationLinkUri']
+            if token_type == 'password':
+                token_url = json.loads(emails['items'][0]['Content']['Body'])['ConfirmationLinkUri']
+            elif token_type == 'activate':
+                token_url = json.loads(emails['items'][0]['Content']['Body'])['ConfirmationLinkUrl']
             token = token_url.split('/')[-1]
         return token
 

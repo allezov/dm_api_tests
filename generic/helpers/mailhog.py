@@ -53,11 +53,13 @@ class MailhogApi:
     def get_token_from_last_email(self, token_type: str = 'password') -> str:
         """
         Get user activation token from last email
-        По умолчанию
+        Метод может принять два параметра
+        1)password для получения токена для сброса пароля - установлен по умолчанию
+        2)activate для получения токена для активации пользователя нужно передавать в вызове функции
         :return:
         """
         with allure.step('получаем токен из последнего сообщения'):
-            emails = self.get_api_v2_messages(limit=10).json()
+            emails = self.get_api_v2_messages(limit=1).json()
             if token_type == 'password':
                 token_url = json.loads(emails['items'][0]['Content']['Body'])['ConfirmationLinkUri']
             elif token_type == 'activate':
